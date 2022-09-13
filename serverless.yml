@@ -1,0 +1,28 @@
+app: serverless-task-queue
+service: serverless-task-queue
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+plugins:
+  - serverless-localstack
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    layer: true
+  localstack:
+    stages:
+      - local
+    lambda:
+      mountCode: true
+    autostart: true
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - sqs: arn:aws:sqs:us-east-1:000000000000:fastapi-queue
